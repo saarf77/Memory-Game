@@ -42,7 +42,12 @@ export default function MemoryGame() {
     audioRef.current = audioElements
 
     // Initial scores fetch
-    LeaderboardService.getScores().then(setScores)
+    LeaderboardService.getScores()
+      .then(setScores)
+      .catch((err) => {
+        console.error("Failed to load scores:", err)
+        setScores([])
+      })
   }, [])
 
   const playSound = useCallback((soundName: keyof typeof SOUNDS) => {
@@ -122,8 +127,25 @@ export default function MemoryGame() {
                   difficulty,
                   date: new Date().toLocaleDateString(),
                 }
+
+                // Save score and update leaderboard
                 LeaderboardService.saveScore(score)
-                setScores(LeaderboardService.getScores())
+                  .then(() => LeaderboardService.getScores())
+                  .then(setScores)
+                  .catch((err) => {
+                    console.error("Error updating leaderboard:", err)
+                    // Add the new score to the current scores
+                    setScores((prevScores) => {
+                      const newScores = [...prevScores, score]
+                      return newScores
+                        .sort((a, b) => {
+                          if (a.score !== b.score) return b.score - a.score
+                          return a.time - b.time
+                        })
+                        .slice(0, 100)
+                    })
+                  })
+
                 setGameState("completed")
               }
               return newMatches

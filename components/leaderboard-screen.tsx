@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import type { Score } from "@/types"
 import { formatTime } from "@/utils/helpers"
 import { Loader2, Trophy, Medal, Award } from "lucide-react"
+import { LeaderboardService } from "@/services/leaderboard-service"
 
 interface LeaderboardScreenProps {
   scores: Score[]
@@ -21,14 +22,12 @@ export function LeaderboardScreen({ scores: initialScores, onBack }: Leaderboard
   useEffect(() => {
     const fetchScores = async () => {
       try {
-        const response = await fetch("/api/leaderboard")
-        if (!response.ok) throw new Error("Failed to fetch scores")
-        const data = await response.json()
-        setScores(data || []) // Ensure we always have an array
+        // Get scores directly from the service
+        const data = await LeaderboardService.getScores()
+        setScores(data || [])
       } catch (err) {
-        setError("Failed to load leaderboard")
         console.error("Error fetching scores:", err)
-        // Fallback to initial scores if API fails
+        // Fallback to initial scores if service fails
         setScores(initialScores || [])
       } finally {
         setIsLoading(false)
@@ -111,6 +110,10 @@ export function LeaderboardScreen({ scores: initialScores, onBack }: Leaderboard
       {isLoading ? (
         <div className="flex justify-center items-center py-8">
           <Loader2 className="w-8 h-8 text-white animate-spin" />
+        </div>
+      ) : sortedScores.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-white text-lg">No scores yet. Be the first to play!</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
