@@ -1,0 +1,64 @@
+.container {
+  @apply container mx-auto px-4 py-6 md:py-8 text-center space-y-8 md:space-y-10;
+}
+
+.header {
+  @apply space-y-4;
+
+  h1 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-white;
+  }
+
+  .playerName {
+    @apply text-lg md:text-xl text-white/90;
+  }
+}
+
+.controls {
+  @apply flex flex-col md:flex-row items-center justify-center gap-4 text-base md:text-lg;
+}
+
+.gameGrid {
+  @apply grid rounded-xl bg-white/10 backdrop-blur-sm mx-auto transition-all duration-500;
+  gap: 0.5rem;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  &.shuffling {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+}
+
+.buttonContainer {
+  @apply flex flex-col md:flex-row gap-6 justify-center items-center;
+}
+
+.gameButton {
+  @apply w-full md:w-auto h-12 px-8 bg-white/20 hover:bg-white/30 text-white font-medium border-2 border-white/30 hover:border-white/50;
+}
+
+.clueButton {
+  @apply bg-white/20 hover:bg-white/30 text-white font-medium border border-white/30 hover:border-white/50;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .clueIcon {
+    @apply w-4 h-4 mr-2;
+
+    &.active {
+      @apply text-yellow-400;
+    }
+
+    &.inactive {
+      @apply text-white/50;
+    }
+  }
+}
+

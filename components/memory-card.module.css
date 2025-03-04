@@ -1,0 +1,77 @@
+.card {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+}
+
+.matched {
+  @apply bg-white/20 border-white/30;
+}
+
+.flipped {
+  @apply bg-white/15 border-white/25;
+}
+
+.default {
+  @apply bg-white/10 border-white/20 hover:bg-white/15 hover:border-white/30;
+}
+
+.highlighted {
+  @apply ring-4 ring-yellow-400/50 shadow-lg shadow-yellow-400/20;
+}
+
+.cardOverlay {
+  @apply absolute inset-0;
+  background: linear-gradient(to bottom right, transparent, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.iconWrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  transform-origin: center;
+}
+
+.small {
+  @apply w-14 h-14 md:w-16 md:h-16;
+}
+
+.medium {
+  @apply w-16 h-16 md:w-20 md:h-20;
+}
+
+.large {
+  @apply w-20 h-20 md:w-24 md:h-24;
+}
+
+.cardContainer {
+  position: relative;
+  perspective: 1000px;
+}
+
+.cardInner {
+  transform-style: preserve-3d;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
