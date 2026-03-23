@@ -34,6 +34,6 @@ export function Timer({ isRunning, onTick, resetKey }: TimerProps) {
     }
   }, [isRunning, onTick])
 
-  return <div className="text-white">Time: {formatTime(timeRef.current)}</div>
+  return <span className="text-white font-bold">{formatTime(timeRef.current)}</span>
 }
 

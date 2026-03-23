@@ -10,7 +10,8 @@ import { GameService } from "@/services/game-service"
 import { LeaderboardService } from "@/services/leaderboard-service"
 import { NameGeneratorService } from "@/services/name-generator"
 import type { GameState, MemoryCard, Score, User, Difficulty, GameStats } from "@/types"
-import { SOUNDS, DIFFICULTY_CONFIG } from "@/utils/constants"
+import { DIFFICULTY_CONFIG } from "@/utils/constants"
+import { SoundService } from "@/services/sound-service"
 import { shuffleUnmatchedCards, findMatchingCard, calculateScore } from "@/utils/game-utils"
 import { toast } from "@/components/ui/toast"
 
@@ -31,17 +32,8 @@ export default function MemoryGame() {
   const [cluesRemaining, setCluesRemaining] = useState(1)
   const [isShuffling, setIsShuffling] = useState(false)
   const shuffleTimeoutRef = useRef<NodeJS.Timeout>()
-  const audioRef = useRef<{ [key: string]: HTMLAudioElement }>({})
 
   useEffect(() => {
-    // Initialize audio elements
-    const audioElements: { [key: string]: HTMLAudioElement } = {}
-    Object.entries(SOUNDS).forEach(([key, src]) => {
-      audioElements[key] = new Audio(src)
-    })
-    audioRef.current = audioElements
-
-    // Initial scores fetch
     LeaderboardService.getScores()
       .then(setScores)
       .catch((err) => {
@@ -50,15 +42,9 @@ export default function MemoryGame() {
       })
   }, [])
 
-  const playSound = useCallback((soundName: keyof typeof SOUNDS) => {
+  const playSound = useCallback((soundName: keyof typeof SoundService) => {
     try {
-      const sound = audioRef.current[soundName]
-      if (sound) {
-        sound.currentTime = 0
-        sound.play().catch(() => {
-          // Ignore audio play errors
-        })
-      }
+      SoundService[soundName]()
     } catch (error) {
       console.error("Failed to play sound:", error)
     }
@@ -249,7 +235,7 @@ export default function MemoryGame() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen texture-overlay">
-      <div className="w-full min-h-screen bg-gradient-to-br from-rose-800/80 via-orange-700/80 to-amber-700/80 backdrop-blur-sm">
+      <div className="w-full min-h-screen bg-gradient-to-br from-violet-700/90 via-indigo-600/90 to-cyan-500/90 backdrop-blur-sm">
         {gameState === "name" && <NameScreen onNameSubmit={handleNameSubmit} />}
 
         {gameState === "menu" && (

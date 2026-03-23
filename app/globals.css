@@ -38,7 +38,7 @@
   }
 
   body {
-    @apply min-h-screen bg-gradient-to-br from-rose-800/80 via-orange-700/80 to-amber-700/80;
+    @apply min-h-screen bg-gradient-to-br from-violet-700 via-indigo-600 to-cyan-500;
   }
 }
 
