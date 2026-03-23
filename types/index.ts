@@ -1,5 +1,3 @@
-import type { LucideIcon } from "lucide-react"
-
 export type GameState = "name" | "menu" | "playing" | "completed" | "leaderboard"
 export type Difficulty = "easy" | "medium" | "hard"
 
@@ -16,9 +14,9 @@ export type Score = {
 
 export type MemoryCard = {
   id: number
-  icon: LucideIcon
+  animalId: string
+  label: string
   isMatched: boolean
-  color: string
   isHighlighted?: boolean
 }
 

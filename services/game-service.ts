@@ -3,18 +3,22 @@ import { ICONS_CONFIG } from "@/utils/constants"
 
 export class GameService {
   static createCards(numPairs: number): MemoryCard[] {
-    const selectedIcons = ICONS_CONFIG.slice(0, numPairs)
+    const shuffled = [...ICONS_CONFIG].sort(() => Math.random() - 0.5)
+    const selectedIcons = shuffled.slice(0, numPairs)
     const cards: MemoryCard[] = []
 
-    selectedIcons.forEach(({ icon, color }, index) => {
-      cards.push({ id: index * 2, icon, color, isMatched: false }, { id: index * 2 + 1, icon, color, isMatched: false })
+    selectedIcons.forEach(({ animalId, label }, index) => {
+      cards.push(
+        { id: index * 2, animalId, label, isMatched: false },
+        { id: index * 2 + 1, animalId, label, isMatched: false },
+      )
     })
 
     return cards.sort(() => Math.random() - 0.5)
   }
 
   static checkForMatch(firstCard: MemoryCard, secondCard: MemoryCard): boolean {
-    return firstCard.icon === secondCard.icon
+    return firstCard.animalId === secondCard.animalId
   }
 }
 
